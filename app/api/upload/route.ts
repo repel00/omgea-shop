@@ -12,7 +12,7 @@ async function hmacSha256(key: ArrayBuffer, data: string): Promise<ArrayBuffer> 
 }
 
 async function getSignatureKey(key: string, dateStamp: string, region: string, service: string): Promise<ArrayBuffer> {
-  const kDate = await hmacSha256(new TextEncoder().encode('AWS4' + key), dateStamp)
+  const kDate = await hmacSha256(new TextEncoder().encode('AWS4' + key).buffer, dateStamp)
   const kRegion = await hmacSha256(kDate, region)
   const kService = await hmacSha256(kRegion, service)
   return hmacSha256(kService, 'aws4_request')
